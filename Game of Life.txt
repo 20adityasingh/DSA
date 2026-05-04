@@ -1,0 +1,46 @@
+class Solution {
+    public void gameOfLife(int[][] board) {
+        int m = board.length;
+        int n = board[0].length;
+        
+        int[] dx = {-1, -1, -1,  0,  0,  1,  1,  1};
+        int[] dy = {-1,  0,  1, -1,  1, -1,  0,  1};
+        
+        List<String> toFlip = new ArrayList<>();
+        
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                
+                int liveNeighbors = 0;
+                
+                for (int d = 0; d < 8; d++) {
+                    int ni = i + dx[d];
+                    int nj = j + dy[d];
+                    
+                    if (ni >= 0 && ni < m && nj >= 0 && nj < n) {
+                        if (board[ni][nj] == 1) {
+                            liveNeighbors++;
+                        }
+                    }
+                }
+                
+                if (board[i][j] == 1) {
+                    if (liveNeighbors < 2 || liveNeighbors > 3) {
+                        toFlip.add(i + "," + j);
+                    }
+                } else {
+                    if (liveNeighbors == 3) {
+                        toFlip.add(i + "," + j);
+                    }
+                }
+            }
+        }
+        
+        for (String entry : toFlip) {
+            String[] parts = entry.split(",");
+            int i = Integer.parseInt(parts[0]);
+            int j = Integer.parseInt(parts[1]);
+            board[i][j] ^= 1;
+        }
+    }
+}
