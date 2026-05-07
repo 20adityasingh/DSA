@@ -1,0 +1,36 @@
+class Solution {
+    public boolean isAnagram(String s, String t) {
+
+        int sl = s.length();
+
+        int tl = t.length();   
+
+        if (sl > tl || sl < tl){
+            return false;
+        }     
+        
+        int [] freq = new int [125];
+
+        int count = 0;
+
+        for(int i = 0; i<sl; i++){
+            freq[(int) s.charAt(i)]++;
+            count++;
+        }
+
+        for(int i = 0; i<tl; i++){
+
+            if(freq[(int) t.charAt(i)] > 0){
+                freq[(int) t.charAt(i)]--;
+                count--;
+            }
+        }
+
+        if(count == 0){
+            return true;
+        }else{
+            return false;
+        }
+
+    }
+}
