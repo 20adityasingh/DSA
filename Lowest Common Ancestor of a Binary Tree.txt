@@ -1,0 +1,78 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+
+    private HashMap<TreeNode, Integer> lca = new HashMap<>();
+
+    private Stack<TreeNode> path = new Stack<>();
+
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        
+        dfs(root, p);
+
+        optimize();
+
+        dfs(root, q);
+
+        return findLCA();
+
+    }
+
+    public boolean dfs(TreeNode node, TreeNode ele){
+
+
+        if(node == null){
+            return false;
+        }
+
+        path.push(node);
+
+        lca.put(node, lca.getOrDefault(node, 0) + 1);
+
+        if( node.val == ele.val){
+            return true;
+        }
+
+        if(dfs(node.left, ele) || dfs(node.right, ele)){
+            return true;
+        }else{
+
+            path.pop();
+
+            lca.remove(node);
+
+            return false;
+        }
+
+    }
+
+    public void optimize(){
+
+        while(!path.isEmpty()){
+            path.pop();
+        }
+
+    }
+
+    public TreeNode findLCA(){
+
+        while(!path.isEmpty()){
+            TreeNode LCA = path.pop();
+
+            if(lca.getOrDefault(LCA, 0) == 2){
+                return LCA;
+            }
+
+        }
+
+        return null;
+
+    }
+}
