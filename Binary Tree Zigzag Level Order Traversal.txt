@@ -1,0 +1,67 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
+        if(root == null) return new ArrayList<>();
+
+        Deque<TreeNode> bfs = new LinkedList<>();
+
+        List<List<Integer>> levelOrder = new ArrayList<>();
+
+        bfs.add(root);
+
+        int zigzag = 0;
+
+        while(!bfs.isEmpty()){
+            int size = bfs.size();
+
+            List<Integer> l = new ArrayList<>();
+
+            if(zigzag == 0){
+                for(int i = 0; i<size; i++){
+                    TreeNode node = bfs.poll();
+                    l.add(node.val);
+
+                    if(node.left != null) bfs.add(node.left);
+                
+                    if (node.right != null) bfs.add(node.right);
+                    
+                }
+            }else{
+
+                for(int i = size -1 ; i>=0; i--){
+                    TreeNode node = bfs.pollLast();
+                    l.add(node.val);
+
+                    if (node.right != null) bfs.addFirst(node.right);
+
+                    if(node.left != null) bfs.addFirst(node.left);
+                    
+                }
+
+            }
+
+            if(zigzag == 1) zigzag = 0;
+            else zigzag = 1;
+
+            levelOrder.add(l);
+
+
+        }
+
+        return levelOrder;
+    }
+}
