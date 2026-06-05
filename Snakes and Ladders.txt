@@ -1,0 +1,80 @@
+class Solution {
+
+    private Queue<int[]> steps;
+    private boolean[] visited;
+    
+    public int snakesAndLadders(int[][] board) {
+        int n = board.length;
+        int target = n * n;
+        
+        this.steps = new LinkedList<>();
+        this.visited = new boolean[target + 1];
+        
+        steps.add(new int[]{1, 0});
+        visited[1] = true;
+        
+        return bfs(board);
+    }
+
+    public int bfs(int[][] board){
+
+        if (steps.isEmpty()) {
+            return -1; 
+        }
+        
+        int n = board.length;
+        int target = n * n;
+        
+        int[] pos = steps.remove();
+        int cell = pos[0];
+        int move = pos[1];
+        
+        if (cell == target) {
+            return move;
+        }
+    
+        for (int dice = 1; dice <= 6; dice++) {
+            int nextCell = cell + dice;
+            
+            if (nextCell > target) {
+                break;
+            }
+            
+            int[] coords = cellToCoordinates(nextCell, n);
+            int r = coords[0];
+            int c = coords[1];
+            
+            if (board[r][c] != -1) {
+
+                nextCell = board[r][c];
+            }
+            
+            if (!visited[nextCell]) {
+                visited[nextCell] = true;
+                
+                steps.add(new int[]{nextCell, move + 1});
+            }
+        }
+        
+        return bfs(board);
+
+    }
+
+    private int[] cellToCoordinates(int cell, int n) {
+        int pos = cell - 1;  
+        
+        int rowFromBottom = pos / n;
+        int row = n - 1 - rowFromBottom; 
+        
+        int colPos = pos % n;
+        
+        int col;
+        if (rowFromBottom % 2 == 0) {
+            col = colPos;  
+        } else {
+            col = n - 1 - colPos;
+        }
+        
+        return new int[]{row, col};
+    }
+}
