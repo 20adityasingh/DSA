@@ -1,0 +1,58 @@
+class Solution {
+    public int minMutation(String startGene, String endGene, String[] bank) {
+
+        HashSet<String> geneSet = new HashSet<>(Arrays.asList(bank));
+
+        if(!geneSet.contains(endGene)){
+            return -1;
+        }
+
+        Queue<String> bfs = new LinkedList<>();
+        HashSet<String> visited = new HashSet<>();
+
+        bfs.add(startGene);
+        visited.add(startGene);
+
+        int mutation = 0;
+        char [] mutChar = {'A', 'C', 'G', 'T'};
+
+        while(!bfs.isEmpty()){
+
+            int size = bfs.size();
+
+            for(int i = 0; i < size; i++){
+                String gene = bfs.remove();
+
+                if(gene.equals(endGene)){
+                    return mutation;
+                }
+
+                for(int j = 0; j < gene.length(); j++){
+                    for(char c : mutChar){
+
+                        if(gene.charAt(j) != c){
+                            String next = gene.substring(0, j) + c + gene.substring(j+1);
+                        
+                            if(geneSet.contains(next) && !visited.contains(next)){
+
+                                visited.add(next);
+
+                                bfs.add(next);
+                                
+                            }
+                        
+                        
+                        }
+
+                    }
+                }
+            }
+
+            mutation++;
+
+        }
+
+        return -1;
+        
+    }
+}
