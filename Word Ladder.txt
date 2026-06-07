@@ -1,0 +1,47 @@
+class Solution {
+    public int ladderLength(String beginWord, String endWord, List<String> wordList) {
+
+        Set<String> wordSet = new HashSet<>(wordList);
+
+        if(!wordSet.contains(endWord)){
+            return 0;
+        }
+
+        Queue<String> bfs = new LinkedList<>();
+
+        Set<String> visited = new HashSet<>();
+
+        bfs.add(beginWord);
+        visited.add(beginWord);
+
+        char [] chara = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's','t', 'u', 'v', 'w', 'x', 'y', 'z'};
+        int sequence = 0;
+
+        while(!bfs.isEmpty()){
+            int size = bfs.size();
+            sequence++;
+            for(int i = 0; i < size; i++){
+                String word = bfs.poll();
+
+                if(word.equals(endWord)){
+                    return sequence;
+                }
+
+                for(int j = 0; j < word.length(); j++){
+                    for(char c : chara){
+
+                        if(c != word.charAt(j)){
+                            String seq = word.substring(0,j) + c + word.substring(j+1);
+
+                            if(wordSet.contains(seq) && !visited.contains(seq)){
+                                visited.add(seq);
+                                bfs.add(seq);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return 0;
+    }
+}
