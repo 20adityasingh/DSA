@@ -1,0 +1,67 @@
+class WordDictionary {
+
+    private class Trie{
+
+        Map<Character, Trie> child;
+        boolean isEndOfWord;
+
+        Trie(){
+            child = new HashMap<>();
+            isEndOfWord = false;
+        }
+    }
+
+    private Trie root;
+
+    public WordDictionary() {
+        
+        root = new Trie();
+
+    }
+    
+    public void addWord(String word) {
+        Trie curr = root;
+        for(char c : word.toCharArray()){
+            if(!curr.child.containsKey(c)){
+                curr.child.put(c, new Trie());
+            }
+            curr = curr.child.get(c);
+        }
+        curr.isEndOfWord = true;
+    }
+    
+    public boolean search(String word) {
+
+        return searchHelper(root, word, 0);
+        
+    }
+
+    private boolean searchHelper(Trie node, String word, int index) {
+        if (index == word.length()) {
+            return node.isEndOfWord;
+        }
+
+        char c = word.charAt(index);
+
+        if (c == '.') {
+            for (Trie child : node.child.values()) {
+                if (searchHelper(child, word, index + 1)) {
+                    return true;
+                }
+            }
+            return false;
+        } else {
+            if (!node.child.containsKey(c)) {
+                return false;
+            }
+            return searchHelper(node.child.get(c), word, index + 1);
+        }
+    }
+}
+
+/**
+ * Your WordDictionary object will be instantiated and called as such:
+ * WordDictionary obj = new WordDictionary();
+ * obj.addWord(word);
+ * boolean param_2 = obj.search(word);
+ */
