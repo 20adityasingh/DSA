@@ -1,0 +1,53 @@
+class Solution {
+
+    Map<Character, String> dialPad;
+
+    List<String> comb;
+
+    Solution(){
+
+        dialPad = new HashMap<>();
+
+        dialPad.put('2', "abc");
+        dialPad.put('3', "def");
+        dialPad.put('4', "ghi");
+        dialPad.put('5', "jkl");
+        dialPad.put('6', "mno");
+        dialPad.put('7', "pqrs");
+        dialPad.put('8', "tuv");
+        dialPad.put('9', "wxyz");
+
+    }
+
+
+    public List<String> letterCombinations(String digits) {
+
+        comb = new ArrayList<>();
+
+        if (digits == null || digits.length() == 0) {
+            return comb;
+        }
+
+        for(char alph : dialPad.get(digits.charAt(0)).toCharArray()){
+
+            backtrack(digits, 1, String.valueOf(alph));
+
+        }
+
+        return comb;
+    }
+
+    private void backtrack(String digits, int idx, String current){
+        if(idx == digits.length()){
+            comb.add(current);
+            return;
+        }
+
+        Character currDigit = digits.charAt(idx);
+        String letters = dialPad.get(currDigit);
+
+        for(char letter : letters.toCharArray()){
+            backtrack(digits, idx+1, current + letter);
+        }
+    }
+}
