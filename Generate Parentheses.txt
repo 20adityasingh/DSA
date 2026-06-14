@@ -1,0 +1,35 @@
+class Solution {
+
+    private List<String> result = new ArrayList<>();
+
+    private StringBuilder parentheses = new StringBuilder();
+
+    public List<String> generateParenthesis(int n) {
+
+        backtrack(0, 0, n);
+
+        return result;
+
+    }
+
+    private void backtrack(int open, int close, int n){
+
+        if(parentheses.length() == 2 * n){
+            result.add(parentheses.toString());
+            return;
+        }
+
+        if(open < n){
+            parentheses.append("(");
+            backtrack(open + 1, close, n);
+            parentheses.deleteCharAt(parentheses.length() - 1);
+        }
+
+        if(close < open){
+            parentheses.append(")");
+            backtrack(open, close + 1, n);
+            parentheses.deleteCharAt(parentheses.length() - 1);
+        }
+
+    }
+}
